@@ -1,4 +1,5 @@
 class Block
+    attr_reader :id
     attr_reader :transactions
     attr_reader :timestamp
     attr_reader :expectedPreviousHash

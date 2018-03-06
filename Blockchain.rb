@@ -9,10 +9,14 @@ class Blockchain
     end
 
     def getWallet user
-        if @wallets[user] == nil
-            @wallets[user] = Wallet.new user
+        if user == "SYSTEM"
+            :SYSTEM
+        else
+            if @wallets[user] == nil
+                @wallets[user] = Wallet.new user
+            end
+            @wallets[user]
         end
-        @wallets[user]
     end
 
     # Apply every transaction in the given block
@@ -20,11 +24,11 @@ class Blockchain
     def applyBlock block
         if @lastBlock == nil
             if block.expectedPreviousHash == 0
-                raise "Invalid block: first block did not expect to be the first"
+                raise "Invalid block: first block did not expect to be the first at block ID #{block.id}"
             end
         else
             if block.timestamp <= @lastBlock.timestamp
-                raise "Invalid block: timestamp did not increase"
+                raise "Invalid block: timestamp did not increase #{block.timestamp} <= #{@lastBlock.timestamp} on block ID #{block.id}"
             end
 
 #            if  block.expectedPreviousHash != @lastBlock.hash
@@ -34,7 +38,7 @@ class Blockchain
 
         block.transactions.each do |t|
             if !t.valid? 
-                raise "Invalid transaction in block: #{t.from}'s balance is not high enough"
+                raise "Invalid transaction in block: #{t.from.owner}'s balance is not high enough at block ID #{block.id}"
             end
             t.apply
         end

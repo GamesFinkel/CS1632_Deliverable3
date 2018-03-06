@@ -14,10 +14,10 @@ File.open(ARGV[0], "r").each_line do |line|
         transactionRegex = /(.*)>(.*)\(([0-9]*)\)/
         blockText[2].split(":").each do | transactionText |
             transactionInfo = /(.*)>(.*)\(([0-9]*)\)/.match(transactionText)
-            fromWallet = blockchain.getWallet transactionText[1]
-            toWallet = blockchain.getWallet transactionText[2]
+            fromWallet = blockchain.getWallet transactionInfo[1]
+            toWallet = blockchain.getWallet transactionInfo[2]
 
-            transaction = Transaction.new fromWallet, toWallet, transactionText[3].to_f
+            transaction = Transaction.new fromWallet, toWallet, transactionInfo[3].to_f
             block.addTransaction transaction
         end
 
