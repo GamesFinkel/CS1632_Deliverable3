@@ -3,7 +3,7 @@ class Transaction
     attr_reader :dest
     def initialize from, dest, amount
         @from = from
-        @dest = dest 
+        @dest = dest
         @amount = amount
     end
 

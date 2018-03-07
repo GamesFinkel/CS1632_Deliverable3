@@ -23,12 +23,15 @@ class Blockchain
     # Throws an exception when a failure is encountered
     def applyBlock block
         if @lastBlock == nil
-            if block.expectedPreviousHash == 0
+            if block.id != 0 or block.expectedPreviousHash != 0
                 raise "Invalid block: first block did not expect to be the first at block ID #{block.id}"
             end
         else
-            if block.timestamp <= @lastBlock.timestamp
-                raise "Invalid block: timestamp did not increase #{block.timestamp} <= #{@lastBlock.timestamp} on block ID #{block.id}"
+            if block.id <= @lastBlock.id
+                raise "Invalid block: block ID did not increase #{block.id} <= #{@lastBlock.id}"
+            end
+            if not block.moreRecentThan? @lastBlock
+                raise "Invalid block: timestamp did not increase on block ID #{block.id}"
             end
 
 #            if  block.expectedPreviousHash != @lastBlock.hash
@@ -37,7 +40,7 @@ class Blockchain
         end
 
         block.transactions.each do |t|
-            if !t.valid? 
+            if !t.valid?
                 raise "Invalid transaction in block: #{t.from.owner}'s balance is not high enough at block ID #{block.id}"
             end
             t.apply

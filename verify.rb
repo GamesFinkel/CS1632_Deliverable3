@@ -10,7 +10,11 @@ blockchain = Blockchain.new
 File.open(ARGV[0], "r").each_line do |line|
     blockText = line.split("|")
     if blockText.length == 5
-        block = Block.new blockText[0].to_i, blockText[1], blockText[3].to_f, blockText[4]
+        timeText = blockText[3].split(".")
+        sec = timeText[0].to_i
+        nanoseconds = timeText[1].to_i
+
+        block = Block.new blockText[0].to_i, blockText[1].to_i, sec, nanoseconds, blockText[4]
         transactionRegex = /(.*)>(.*)\(([0-9]*)\)/
         blockText[2].split(":").each do | transactionText |
             transactionInfo = /(.*)>(.*)\(([0-9]*)\)/.match(transactionText)
@@ -26,6 +30,6 @@ File.open(ARGV[0], "r").each_line do |line|
 end
 
 blockchain.wallets.each do |key, wallet|
-    puts "#{wallet.owner} holds #{wallet.balance}" 
+    puts "#{wallet.owner} holds #{wallet.balance}"
 end
 
