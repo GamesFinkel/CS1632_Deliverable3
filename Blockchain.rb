@@ -34,9 +34,9 @@ class Blockchain
                 raise "Invalid block: timestamp did not increase on block ID #{block.id}"
             end
 
-#            if  block.expectedPreviousHash != @lastBlock.hash
-#                raise "Invalid block: expected hash did not match previous"
-#            end
+            if  block.expectedPreviousHash != @lastBlock.hash
+                raise "Invalid block: expected hash did not match previous"
+            end
         end
 
         block.transactions.each do |t|
@@ -49,4 +49,3 @@ class Blockchain
         @lastBlock = block
     end
 end
-

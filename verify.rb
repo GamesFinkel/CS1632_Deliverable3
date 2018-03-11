@@ -4,7 +4,10 @@
 require_relative "Blockchain"
 require_relative "Block"
 require_relative "Transaction"
-
+if ARGV.size !=1
+  puts "Incorrect number of arguments\nBLOCKCHAIN INVALID"
+  exit()
+end
 blockchain = Blockchain.new
 
 File.open(ARGV[0], "r").each_line do |line|
