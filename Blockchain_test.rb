@@ -6,6 +6,16 @@ require_relative 'Block'
 
 
 class BlockchainTest < Minitest::Test
+
+    def test_good_block
+        blockA = Block.new 0, 0, 1, 1, '1c12'
+        blockB = Block.new 1, '1c12', 1, 2, 'abb2'
+
+        blockchain = Blockchain.new
+        blockchain.applyBlock blockA
+        blockchain.applyBlock blockB
+    end
+
     def test_bad_start_block
         blockInit = Block.new 42, 0,"", 1, 0, ''
 

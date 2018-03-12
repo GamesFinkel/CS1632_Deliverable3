@@ -7,6 +7,7 @@ class Block
     attr_reader :transactionString
     attr_reader :expectedBlockHash
     attr_reader :time
+    attr_reader :hash
 
     def initialize id, expectedPreviousHash, transaction_string,seconds,nanoseconds, expectedBlockHash
         @transactions = []
@@ -17,6 +18,7 @@ class Block
         @expectedBlockHash = expectedBlockHash.strip
         @transactionString = transaction_string
         @time = "#{@seconds}.#{@nanoseconds}"
+        @hash = compute_hash
     end
 
     def addTransaction transaction
@@ -35,7 +37,7 @@ class Block
         end
     end
 
-    def hash
+    def compute_hash
         # TODO: Return a hash for this block
         string_to_hash = "#{id}|#{expectedPreviousHash}|#{transactionString}|#{seconds}.#{nanoseconds}"
         value = 0
