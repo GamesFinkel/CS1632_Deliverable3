@@ -21,7 +21,7 @@ class BlockchainTest < Minitest::Test
 
         blockchain = Blockchain.new
         assert_raises RuntimeError do
-            blockchain.applyBlock blockInit
+            blockchain.applyBlock blockInit,0
         end
     end
 
@@ -31,10 +31,10 @@ class BlockchainTest < Minitest::Test
         blockB = Block.new 1, blockA.hash,"", 3, 0, ''
 
         blockchain = Blockchain.new
-        blockchain.applyBlock blockInit
-        blockchain.applyBlock blockA
+        blockchain.applyBlock blockInit,0
+        blockchain.applyBlock blockA,1
         assert_raises RuntimeError do
-            blockchain.applyBlock blockB
+            blockchain.applyBlock blockB,2
         end
     end
 
@@ -43,9 +43,9 @@ class BlockchainTest < Minitest::Test
         blockB = Block.new 1, blockA.hash,"", 1, 0, ''
 
         blockchain = Blockchain.new
-        blockchain.applyBlock blockA
+        blockchain.applyBlock blockA,0
         assert_raises RuntimeError do
-            blockchain.applyBlock blockB
+            blockchain.applyBlock blockB,1
         end
     end
 end

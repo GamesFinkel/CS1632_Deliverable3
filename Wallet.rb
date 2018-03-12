@@ -6,6 +6,4 @@ class Wallet
     @owner = owner
     @balance = 0
   end
-
 end
-

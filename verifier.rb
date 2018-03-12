@@ -9,7 +9,7 @@ if ARGV.size !=1
   exit()
 end
 blockchain = Blockchain.new
-
+  lineNum = 0
 File.open(ARGV[0], "r").each_line do |line|
     blockText = line.chomp!.split("|")
     if blockText.length == 5
@@ -26,11 +26,11 @@ File.open(ARGV[0], "r").each_line do |line|
             transaction = Transaction.new fromWallet, toWallet, transactionInfo[3].to_f
             block.addTransaction transaction
         end
-
-        blockchain.applyBlock block
+        blockchain.applyBlock block,lineNum
+        lineNum+=1
     end
 end
 
 blockchain.wallets.each do |key, wallet|
-    puts "#{wallet.owner} holds #{wallet.balance}"
+    puts "#{wallet.owner}: #{wallet.balance.to_i} billcoins"
 end
