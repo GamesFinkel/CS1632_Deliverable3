@@ -26,7 +26,14 @@ File.open(ARGV[0], "r").each_line do |line|
             transaction = Transaction.new fromWallet, toWallet, transactionInfo[3].to_f
             block.addTransaction transaction
         end
-        blockchain.applyBlock block,lineNum
+
+        begin
+            blockchain.applyBlock block,lineNum
+        rescue Exception => e
+            puts e.message
+            puts "BLOCKCHAIN INVALID"
+            exit(1)
+        end
         lineNum+=1
     end
 end
