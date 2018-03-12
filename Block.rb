@@ -6,6 +6,7 @@ class Block
     attr_reader :expectedPreviousHash
     attr_reader :transactionString
     attr_reader :expectedBlockHash
+    attr_reader :time
 
     def initialize id, expectedPreviousHash, transaction_string,seconds,nanoseconds, expectedBlockHash
         @transactions = []
@@ -13,14 +14,17 @@ class Block
         @seconds = seconds
         @nanoseconds = nanoseconds
         @expectedPreviousHash = expectedPreviousHash
-        @expectedBlockHash = expectedBlockHash
+        @expectedBlockHash = expectedBlockHash.strip
         @transactionString = transaction_string
+        @time = "#{@seconds}.#{@nanoseconds}"
     end
 
     def addTransaction transaction
         @transactions.push(transaction)
     end
-
+    def toString
+      "#{id}|#{expectedPreviousHash}|#{transactionString}|#{seconds}.#{nanoseconds}"
+    end
     def moreRecentThan? otherBlock
         if otherBlock.seconds < @seconds
             true

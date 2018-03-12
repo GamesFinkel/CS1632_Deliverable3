@@ -21,31 +21,51 @@ class Blockchain
 
     # Apply every transaction in the given block
     # Throws an exception when a failure is encountered
-    def applyBlock block
+    def applyBlock block, lineNum
+      if block.id != lineNum
+        puts "Line #{lineNum}: Invalid block number #{block.id}, should be #{lineNum}"
+        puts"BLOCKCHAIN INVALID"
+        exit()
+      end
         if @lastBlock == nil
-            if block.id != 0 or block.expectedPreviousHash != 0
-                raise "Invalid block: first block did not expect to be the first at block ID #{block.id}"
+            if block.expectedPreviousHash != "0"
+              puts "Line 0: Invalid previous hash #{block.expectedPreviousHash}, should be 0"
+              puts"BLOCKCHAIN INVALID"
+              exit()
+            end
+            if block.expectedBlockHash != block.hash
+              puts "Line #{lineNum}: String \'#{block.toString}\' hash set to #{block.expectedBlockHash}, should be #{block.hash}"
+              puts"BLOCKCHAIN INVALID"
+              exit()
             end
         else
-            if block.id <= @lastBlock.id
-                raise "Invalid block: block ID did not increase #{block.id} <= #{@lastBlock.id}"
-            end
             if not block.moreRecentThan? @lastBlock
-                raise "Invalid block: timestamp did not increase on block ID #{block.id}"
+              puts "Line #{lineNum}: Previous timestamp #{@lastBlock.time} >= new timestamp #{block.time}"
+              puts"BLOCKCHAIN INVALID"
+              exit()
             end
-
             if  block.expectedPreviousHash != @lastBlock.hash
-                raise "Invalid block: expected hash did not match previous"
+              puts "Line #{lineNum}: Previous hash was #{block.expectedPreviousHash}, should be #{@lastBlock.hash}"
+              puts"BLOCKCHAIN INVALID"
+              exit()
+            end
+            if block.expectedBlockHash != block.hash
+              puts "Line #{lineNum}: String \'#{block.toString}\' hash set to #{block.expectedBlockHash}, should be #{block.hash}"
+              puts"BLOCKCHAIN INVALID"
+              exit()
             end
         end
 
         block.transactions.each do |t|
-            if !t.valid?
-                raise "Invalid transaction in block: #{t.from.owner}'s balance is not high enough at block ID #{block.id}"
-            end
             t.apply
         end
-
+        @wallets.each do |w|
+          if w[1].balance < 0
+            puts "Line #{lineNum}: Invalid block, address #{w[1].owner} has #{w[1].balance.to_i} billcoins"
+            puts"BLOCKCHAIN INVALID"
+            exit()
+          end
+        end
         @lastBlock = block
     end
 end
