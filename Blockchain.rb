@@ -23,24 +23,24 @@ class Blockchain
     # Throws an exception when a failure is encountered
     def applyBlock block, lineNum
       if block.id != lineNum
-        raise InvalidBlockError, "Line #{lineNum}: Invalid block number #{block.id}, should be #{lineNum}"
+        raise "Line #{lineNum}: Invalid block number #{block.id}, should be #{lineNum}"
       end
         if @lastBlock == nil
             if block.expectedPreviousHash != "0"
-              raise InvalidPreviousHashError, 'Line 0: Invalid previous hash #{block.expectedPreviousHash}, should be 0'
+              raise 'Line 0: Invalid previous hash #{block.expectedPreviousHash}, should be 0'
             end
             if block.expectedBlockHash != block.hash
-              raise InvalidHashError, "Line #{lineNum}: String \'#{block.toString}\' hash set to #{block.expectedBlockHash}, should be #{block.hash}"
+              raise "Line #{lineNum}: String \'#{block.toString}\' hash set to #{block.expectedBlockHash}, should be #{block.hash}"
             end
         else
             if not block.moreRecentThan? @lastBlock
-              raise InvalidTimeError,"Line #{lineNum}: Previous timestamp #{@lastBlock.time} >= new timestamp #{block.time}"
+              raise Error,"Line #{lineNum}: Previous timestamp #{@lastBlock.time} >= new timestamp #{block.time}"
             end
             if  block.expectedPreviousHash != @lastBlock.hash
-              raise InvalidPreviousHashError, "Line #{lineNum}: Previous hash was #{block.expectedPreviousHash}, should be #{@lastBlock.hash}"
+              raise "Line #{lineNum}: Previous hash was #{block.expectedPreviousHash}, should be #{@lastBlock.hash}"
             end
             if block.expectedBlockHash != block.hash
-              raise InvalidHashError, "Line #{lineNum}: String \'#{block.toString}\' hash set to #{block.expectedBlockHash}, should be #{block.hash}"
+              raise "Line #{lineNum}: String \'#{block.toString}\' hash set to #{block.expectedBlockHash}, should be #{block.hash}"
             end
         end
 
@@ -49,7 +49,7 @@ class Blockchain
         end
         @wallets.each do |w|
           if w[1].balance < 0
-            raise InvalidBalanceError, "Line #{lineNum}: Invalid block, address #{w[1].owner} has #{w[1].balance.to_i} billcoins"
+            raise "Line #{lineNum}: Invalid block, address #{w[1].owner} has #{w[1].balance.to_i} billcoins"
           end
         end
         @lastBlock = block
