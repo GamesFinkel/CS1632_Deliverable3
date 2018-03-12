@@ -23,7 +23,7 @@ class Blockchain
     # Throws an exception when a failure is encountered
     def applyBlock block
         if @lastBlock == nil
-            if block.id != 0 or block.expectedPreviousHash != 0
+            if block.id != 0 or block.expectedPreviousHash != '0'
                 raise "Invalid block: first block did not expect to be the first at block ID #{block.id}"
             end
         else
@@ -34,8 +34,12 @@ class Blockchain
                 raise "Invalid block: timestamp did not increase on block ID #{block.id}"
             end
 
-            if  block.expectedPreviousHash != @lastBlock.hash
-                raise "Invalid block: expected hash did not match previous"
+            if block.expectedPreviousHash != @lastBlock.hash
+                raise "Invalid block: expected hash did not match previous on block ID #{block.id} (#{block.expectedPreviousHash} vs #{@lastBlock.hash}"
+            end
+
+            if block.hash != block.expectedBlockHash
+                raise "Invalid block: expected hash did not match actual on block ID #{block.id} ('#{block.expectedBlockHash}' vs '#{@lastBlock.hash}'"
             end
         end
 
