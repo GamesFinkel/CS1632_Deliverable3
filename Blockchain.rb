@@ -23,10 +23,7 @@ class Blockchain
     # Throws an exception when a failure is encountered
     def applyBlock block, lineNum
       if block.id != lineNum
-        raise
-        puts "Line #{lineNum}: Invalid block number #{block.id}, should be #{lineNum}"
-        puts"BLOCKCHAIN INVALID"
-        exit()
+        raise InvalidBlockError, "Line #{lineNum}: Invalid block number #{block.id}, should be #{lineNum}"
       end
         if @lastBlock == nil
             if block.expectedPreviousHash != "0"
