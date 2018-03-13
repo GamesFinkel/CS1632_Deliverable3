@@ -24,9 +24,11 @@ class Block
     def addTransaction transaction
         @transactions.push(transaction)
     end
+
     def toString
       "#{id}|#{expectedPreviousHash}|#{transactionString}|#{seconds}.#{nanoseconds}"
     end
+
     def moreRecentThan? otherBlock
         if otherBlock.seconds < @seconds
             true

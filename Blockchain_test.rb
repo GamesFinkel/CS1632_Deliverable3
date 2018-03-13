@@ -8,12 +8,12 @@ require_relative 'Block'
 class BlockchainTest < Minitest::Test
 
     def test_good_block
-        blockA = Block.new 0, 0, 1, 1, '1c12'
-        blockB = Block.new 1, '1c12', 1, 2, 'abb2'
+        blockA = Block.new 0, '0', '', 1, 1, '1d4e'
+        blockB = Block.new 1, '1d4e', '', 1, 2, 'c189'
 
         blockchain = Blockchain.new
-        blockchain.applyBlock blockA
-        blockchain.applyBlock blockB
+        blockchain.applyBlock blockA, 0
+        blockchain.applyBlock blockB, 1
     end
 
     def test_bad_start_block
@@ -26,9 +26,9 @@ class BlockchainTest < Minitest::Test
     end
 
     def test_out_of_order_id
-        blockInit = Block.new 0, 0,"", 1, 0, ''
-        blockA = Block.new 2, blockInit.hash,"", 2, 0, ''
-        blockB = Block.new 1, blockA.hash,"", 3, 0, ''
+        blockInit = Block.new 0, '0', "", 1, 0, '5e36'
+        blockA = Block.new 1, blockInit.hash, "", 2, 0, 'd459'
+        blockB = Block.new 1, blockA.hash, "", 3, 0, ''
 
         blockchain = Blockchain.new
         blockchain.applyBlock blockInit,0
@@ -39,8 +39,8 @@ class BlockchainTest < Minitest::Test
     end
 
     def test_bad_timestamp
-        blockA = Block.new 0, 0,"", 2, 0, ''
-        blockB = Block.new 1, blockA.hash,"", 1, 0, ''
+        blockA = Block.new 0, '0', "", 2, 0, '5ac4'
+        blockB = Block.new 1, blockA.hash, "", 1, 0, ''
 
         blockchain = Blockchain.new
         blockchain.applyBlock blockA,0
@@ -49,3 +49,4 @@ class BlockchainTest < Minitest::Test
         end
     end
 end
+

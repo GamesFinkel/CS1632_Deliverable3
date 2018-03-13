@@ -5,6 +5,7 @@ class Blockchain
 
     def initialize
         @wallets = {}
+        @blocks = {}
         @lastBlock = nil
     end
 
@@ -27,14 +28,14 @@ class Blockchain
       end
         if @lastBlock == nil
             if block.expectedPreviousHash != "0"
-              raise 'Line 0: Invalid previous hash #{block.expectedPreviousHash}, should be 0'
+              raise "Line 0: Invalid previous hash #{block.expectedPreviousHash}, should be 0"
             end
             if block.expectedBlockHash != block.hash
               raise "Line #{lineNum}: String \'#{block.toString}\' hash set to #{block.expectedBlockHash}, should be #{block.hash}"
             end
         else
             if not block.moreRecentThan? @lastBlock
-              raise Error,"Line #{lineNum}: Previous timestamp #{@lastBlock.time} >= new timestamp #{block.time}"
+              raise "Line #{lineNum}: Previous timestamp #{@lastBlock.time} >= new timestamp #{block.time}"
             end
             if  block.expectedPreviousHash != @lastBlock.hash
               raise "Line #{lineNum}: Previous hash was #{block.expectedPreviousHash}, should be #{@lastBlock.hash}"
