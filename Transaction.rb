@@ -7,14 +7,6 @@ class Transaction
         @amount = amount
     end
 
-#    def valid?
-#        if @from == :SYSTEM
-#            true
-#        else
-#            @from.balance >= @amount
-#        end
-#    end
-
     def apply
         if @from != :SYSTEM
             @from.balance -= @amount

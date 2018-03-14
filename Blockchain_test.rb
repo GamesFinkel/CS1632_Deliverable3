@@ -48,5 +48,28 @@ class BlockchainTest < Minitest::Test
             blockchain.applyBlock blockB,1
         end
     end
+
+    def test_get_wallet
+        blockchain = Blockchain.new
+
+        wallet = blockchain.getWallet "Andrew"
+        assert_equal wallet.owner, "Andrew"
+        assert_equal 0, wallet.balance
+    end
+
+    def test_same_wallet
+        blockchain = Blockchain.new
+
+        wallet = blockchain.getWallet "Andrew"
+        assert_equal wallet.owner, "Andrew"
+        assert_equal 0, wallet.balance
+
+        wallet.balance = 5
+
+        secondGet = blockchain.getWallet "Andrew"
+        assert_equal secondGet.owner, "Andrew"
+        assert_equal 5, secondGet.balance
+
+    end
 end
 
